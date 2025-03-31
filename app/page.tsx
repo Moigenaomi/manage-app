@@ -1,10 +1,10 @@
 "use client";
-import {useMutation , useQuery} from "convex/react";
+import { useMutation, useQuery } from "convex/react";
 import { api } from "../convex/_generated/api";
-import { Id } from "../../convex/_generated/dataModel";
+import { Id } from "../convex/_generated/dataModel"; 
 import { useState } from "react";
-import AddGroceryForm from "./components/groceryform";
-import GroceryList from "./components/grocerylist";
+import AddGroceryForm from "./_components/groceryform";
+import GroceryList from "./_components/grocerylist";
 
 
 export default function Page() {
@@ -21,10 +21,10 @@ export default function Page() {
   const handleAdd = async () => {
     await addGrocery({ name: "Bananas", quantity: 3, category: "Fruits" });
   };
-  const handleUpdate = async (id:Id<"groceries">) => {
+  const handleUpdate = async (id: Id<"groceries">) => {
     await updateGrocery({ id, quantity: 5 });
   };
-  const handleDelete = async (id:Id<"groceries"> ) => {
+  const handleDelete = async (id: Id<"groceries">) => {
     await deleteGrocery({ id });
   };
   type Grocery = {
@@ -33,7 +33,7 @@ export default function Page() {
     quantity: number;
     category: string;
   }
-  
+
   return (
     <div className="min-h-screen bg-gray-900 text-white p-5">
       <h1 className="text-3xl font-bold mb-4">Grocery List</h1>
@@ -47,7 +47,7 @@ export default function Page() {
       />
 
       <AddGroceryForm />
-      <GroceryList/>
+      <GroceryList />
       {/* Display filtered groceries */}
       {filteredGroceries && filteredGroceries.length > 0 ? (
         <ul className="space-y-2">
@@ -59,7 +59,7 @@ export default function Page() {
               <span>
                 {g.name} - {g.quantity} ({g.category})
               </span>
-               </li>
+            </li>
           ))}
         </ul>
       ) : (
@@ -67,7 +67,7 @@ export default function Page() {
       )}
       <button onClick={handleAdd}>Add Banana</button>
       <ul>
-        {groceries?.map((g:Grocery) => (
+        {groceries?.map((g: Grocery) => (
           <li key={g._id}>
             {g.name} - {g.quantity}
             <button onClick={() => handleUpdate(g._id)}>Update </button>

@@ -1,9 +1,18 @@
 "use client";
+
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { ConvexProvider,  ConvexReactClient } from "convex/react";
+import { ConvexProvider, ConvexReactClient } from "convex/react";
+import { CartContext } from "../context/CartContext";
+import { useState, ReactNode } from "react";
 
-const convex = new ConvexReactClient(process.env.NEXT_PUBLIC_CONVEX_URL!);
+declare const process: {
+  env: {
+    NEXT_PUBLIC_CONVEX_URL: string;
+  };
+};
+
+const convex = new ConvexReactClient(process.env.NEXT_PUBLIC_CONVEX_URL);
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,19 +24,32 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+type CartItem = {
+  id: string;
+  name: string;
+  price: number;
+  quantity: number;
+};
+
+type CartContextType = {
+  cart: CartItem[];
+  setCart: React.Dispatch<React.SetStateAction<CartItem[]>>;
+};
+
+type RootLayoutProps = {
+  children: ReactNode;
+};
+
+export default function RootLayout({ children }: RootLayoutProps) {
+  const [cart, setCart] = useState<CartItem[]>([]);
+
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      > <ConvexProvider client ={convex}>
-        {children}
-      </ConvexProvider>
-      </body>
-    </html>
+    <CartContext.Provider value={{ cart, setCart }}>
+      <html lang="en">
+        <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+          <ConvexProvider client={convex}>{children}</ConvexProvider>
+        </body>
+      </html>
+    </CartContext.Provider>
   );
 }
