@@ -1,10 +1,10 @@
 "use client";
 import {useMutation , useQuery} from "convex/react";
 import { api } from "../convex/_generated/api";
-import { Id } from "../../convex/_generated/dataModel";
+import { Id } from "../convex/_generated/dataModel";
 import { useState } from "react";
-import AddGroceryForm from "./components/groceryform";
-import GroceryList from "./components/grocerylist";
+import AddGroceryForm from "./_components/groceryform";
+import GroceryList from "./_components/grocerylist";
 
 
 export default function Page() {
@@ -48,6 +48,7 @@ export default function Page() {
 
       <AddGroceryForm />
       <GroceryList/>
+      
       {/* Display filtered groceries */}
       {filteredGroceries && filteredGroceries.length > 0 ? (
         <ul className="space-y-2">

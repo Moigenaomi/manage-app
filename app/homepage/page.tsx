@@ -1,7 +1,7 @@
-import CategoryList from "../components/categorylist";
-import Header from "../components/header";
-import OfferCard from "../components/offercard";
-import SearchBar from "../components/searchbar";
+import CategoryList from "../_components/categorylist";
+import {Header} from "../_components/header";
+import OfferCard from "../_components/offercard";
+import SearchBar from "../_components/searchbar";
 
 
 

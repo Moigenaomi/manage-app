@@ -1,15 +1,15 @@
 import { useMutation,useQuery } from "convex/react";
 import { v } from "convex/values";
 import {api} from "../convex/_generated/api";
-import { mutation, query} from "convex/server"
+import { mutation, query} from "./_generated/server"
 import type {MutationContext} from "convex/server";
 
 export const useGroceries= () =>
     {
       const groceries = useQuery(api.groceries.getGroceries) ?? [];
       const addGrocery = useMutation(api.groceries.addGrocery);
-      const updateGrocery = useMutation(api.groceries.updateGrocery);
-      const deleteGrocery = useMutation(api.groceries.deleteGrocery);
+      const updateGrocery = useMutation(api.groceries.updateGroceries);
+      const deleteGrocery = useMutation(api.groceries.deleteGroceries);
     
       return { groceries, addGrocery, updateGrocery, deleteGrocery };
     };
@@ -21,7 +21,7 @@ export const addGrocery= mutation({
         category: v.string(),
 
     },
-    handler: async(ctx: MutationContext,{name,quantity,category}: {name:string,quantity:number,category:string}) =>{
+    handler: async(ctx,{name,quantity,category}: {name:string,quantity:number,category:string}) =>{
         await ctx.db.insert("groceries",{
             name,
             quantity,
