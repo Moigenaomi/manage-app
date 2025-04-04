@@ -30,11 +30,11 @@ export const Footer = () => {
             </div>
             <div>
               <h3 className="text-lg font-semibold mb-4">Connect With Us</h3>
-              <div className="flex space-x-4">
+              {/* <div className="flex space-x-4">
                 <a href="#" className="hover:text-orange-500"><Facebook /></a>
                 <a href="#" className="hover:text-orange-500"><Twitter /></a>
                 <a href="#" className="hover:text-orange-500"><Instagram /></a>
-              </div>
+              </div> */}
             </div>
           </div>
           <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">

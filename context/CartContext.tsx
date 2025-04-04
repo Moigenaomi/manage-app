@@ -9,40 +9,43 @@ import React, {createContext, useState, useContext, ReactNode} from 'react';
 //  define context
  export type CartContextType = {
   cartItems: CartItem[];
-  setCartItems: (cartItems: CartItem[]) => void;
+  setCartItems: React.Dispatch<React.SetStateAction<CartItem[]>>;
+  addToCartItems: (item: CartItem) => void;
+  removeFromCart: (item: CartItem) => void;
+  clearCartItems: () => void;
  };
 //  create context
- export const CartContext = createContext<CartContextType>({
-  cartItems: [],
-  setCartItems: () => {},
- });
+ export const CartContext = createContext<CartContextType| undefined>(undefined);
+
 //  create provide component
  export const CartProvider =({children}: {children:ReactNode})=> {
-  const [CartItems, setCartItems] = useState(<any[]>([]));
- }
- 
- export const useCartContext = () => useContext(CartContext);
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
-  const [products, setProducts] = useState([
-    {id: 1, name: 'Apple', price: 1.5},
-    {id: 2, name: 'Banana', price: 0.8},
-    {id: 3, name: 'Orange', price: 1.2},
-  ]);
-  const addToCart = (item) => {
-    setCart([...cart, product])
+  const addToCartItems = (item: CartItem) => {
+    setCartItems([...cartItems, item])
   };
-  const removeFromCart = (itemId) => {
-    setCart(cart.filter((item) => item.id!== itemId))
+  const removeFromCart = (itemToRemove: CartItem) => {
+    setCartItems(cartItems.filter((item: CartItem) => itemToRemove.id!== item.id))
   };
-  const clearCart = () => {
-    setCart([])
+  const clearCartItems = () => {
+    setCartItems([])
   };
+ return (
+  <CartContext.Provider value={{cartItems, setCartItems, addToCartItems, removeFromCart, clearCartItems}}>
+    {children}
+  </CartContext.Provider>
+)};
 
-  return (
-    <CartContext.Provider value={{cart, addToCart, removeFromCart}}>
-      {children}
-    </CartContext.Provider>
-  )
+ export const useCartContext = () => {
+    const context = useContext(CartContext);
+    if (!context) {
+    throw new Error('useCartContext must be used within a CartProvider');
+  }
+  return context;
+};
   
-}
+  
+
+  
+  
 

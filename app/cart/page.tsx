@@ -1,15 +1,15 @@
 
 "useState";
 
-import React, {useState} from "react";
+import React from "react";
 import { ShoppingCart, Search, Heart, Phone, Mail, MapPin } from "lucide-react";
 import  {Header} from "../_components/header";
-import {Footer}  from "../_components/Footer";
-import { useCartContext } from "../../context/CartContext";
-import { CartItem } from "../../context/CartContext";
+// import {Footer}  from "../_components/Footer";
+// import { useCartContext } from "../../context/CartContext";
+import { CartItem, useCartContext} from "../../context/CartContext";
 
 export default function Cart() {
-    const [cartItems, setCartItems] = useState<CartItem[]>([]);
+    const {cartItems, setCartItems} = useCartContext();
 
     const updateQuantity = (id: number, newQuantity: number) => {
         const updatedCartItems = cartItems.map((item: CartItem) => {
@@ -20,14 +20,20 @@ export default function Cart() {
         });
         setCartItems(updatedCartItems);
         };
+        
     const removeItem = (id: number) => {
         const updatedCartItems = cartItems.filter((item: CartItem) => item.id!== id);
         setCartItems(updatedCartItems);
-        // <button onClick = {() =>removeItem(item.id)}>Remove</button>
     };
-    const totalPrice = CartItems.reduce((total, item) => total + item.price * item.quantity, 0);
-    const shipping = 0;
-    const total = totalPrice + shipping;
+    return(
+        <div className="container mx-auto px-4">
+            <button onClick={()=> updateQuantity(1,5)}>updateQuantity</button>
+            <button onClick = {() =>removeItem(1)}>Remove</button>
+        </div>
+    );
+    const totalPrice: number= cartItems.reduce((total:number, item: CartItem) => total + item.price *( item.quantity|| 1), 0)||0;
+    const shipping: number= 0;
+    const total: number = totalPrice + shipping;
     return(
         <div className="min h-screen bg-white">
             <Header />
@@ -44,7 +50,8 @@ export default function Cart() {
                     </nav>
                 </div>
                 <ShoppingCart size={24} className="text-2xl" />
-                <p>Cart ({CartItems.length})</p>
+                <p>Cart ({cartItems.length})</p>
+                <p>Total Price : ${total.toFixed(2)}</p>
             </div>
 
             <div className="container mx-auto py-12 px-4">
