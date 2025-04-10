@@ -1,16 +1,19 @@
 "use client"
 
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { ShoppingCart, Search, Heart, Phone, Mail, MapPin, Minus, Plus, X, ArrowRight, RefreshCw } from 'lucide-react';
 import Header from '../_components/header';
 import Footer from '../_components/Footer';
+import { CartContext } from '../../context/CartContext';
+import Link from 'next/link';
 
 function Cart() {
-  const [cartItems, setCartItems] = useState(initialCartItems);
+  // const [cartItems, setCartItems] = useState(initialCartItems);
+  const { cart, setCart } = useContext(CartContext)
 
   const updateQuantity = (id: number, newQuantity: number) => {
     if (newQuantity < 1) return;
-    setCartItems(items =>
+    setCart(items =>
       items.map(item =>
         item.id === id ? { ...item, quantity: newQuantity } : item
       )
@@ -18,16 +21,16 @@ function Cart() {
   };
 
   const removeItem = (id: number) => {
-    setCartItems(items => items.filter(item => item.id !== id));
+    setCart(items => items.filter(item => item.id !== id));
   };
 
-  const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+  const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
   const shipping = 0; // Free shipping
   const total = subtotal + shipping;
 
   return (
     <div className="min-h-screen bg-white">
-     <Header />
+      <Header />
 
       {/* Breadcrumb */}
       <div className="bg-gray-50 py-4">
@@ -45,12 +48,12 @@ function Cart() {
       {/* Cart Section */}
       <div className="container mx-auto py-12 px-4">
         <h1 className="text-3xl font-bold mb-8">Shopping Cart</h1>
-        
+
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Cart Items */}
           <div className="lg:col-span-2 space-y-4">
-            {cartItems.map((item) => (
-              <div key={item.id} className="flex gap-4 bg-white p-4 rounded-lg border">
+            {cart.map((item,index) => (
+              <div key={index} className="flex gap-4 bg-white p-4 rounded-lg border">
                 <img
                   src={item.image}
                   alt={item.name}
@@ -89,17 +92,17 @@ function Cart() {
               </div>
             ))}
 
-            {cartItems.length === 0 && (
+            {cart.length === 0 && (
               <div className="text-center py-12">
                 <ShoppingCart className="w-16 h-16 mx-auto text-gray-400 mb-4" />
                 <h2 className="text-xl font-medium mb-2">Your cart is empty</h2>
                 <p className="text-gray-500 mb-4">Add some products to your cart and start shopping!</p>
-                <a
-                  href="#"
+                <Link
+                  href="/products"
                   className="inline-block bg-green-600 text-white px-6 py-2 rounded-full hover:bg-green-700 transition-colors"
                 >
                   Continue Shopping
-                </a>
+                </Link>
               </div>
             )}
           </div>
@@ -108,7 +111,7 @@ function Cart() {
           <div className="lg:col-span-1">
             <div className="bg-gray-50 rounded-lg p-6">
               <h2 className="text-xl font-bold mb-4">Order Summary</h2>
-              
+
               <div className="space-y-3 mb-6">
                 <div className="flex justify-between">
                   <span className="text-gray-600">Subtotal</span>
@@ -152,31 +155,31 @@ function Cart() {
   );
 }
 
-const initialCartItems = [
-  {
-    id: 1,
-    name: 'Organic Raw Honey',
-    variant: '500g Glass Jar',
-    price: 24.99,
-    quantity: 1,
-    image: 'https://images.unsplash.com/photo-1587049352846-4a222e784d38?auto=format&fit=crop&q=80&w=200',
-  },
-  {
-    id: 2,
-    name: 'Organic Maple Syrup',
-    variant: 'Grade A Dark',
-    price: 19.99,
-    quantity: 2,
-    image: 'https://images.unsplash.com/photo-1589496933738-f5c27bc146e3?auto=format&fit=crop&q=80&w=200',
-  },
-  {
-    id: 3,
-    name: 'Raw Sugar',
-    variant: '1kg Pack',
-    price: 12.99,
-    quantity: 1,
-    image: 'https://images.unsplash.com/photo-1597831520711-4456c0b4c0e3?auto=format&fit=crop&q=80&w=200',
-  },
-];
+// const initialCartItems = [
+//   {
+//     id: 1,
+//     name: 'Organic Raw Honey',
+//     variant: '500g Glass Jar',
+//     price: 24.99,
+//     quantity: 1,
+//     image: 'https://images.unsplash.com/photo-1587049352846-4a222e784d38?auto=format&fit=crop&q=80&w=200',
+//   },
+//   {
+//     id: 2,
+//     name: 'Organic Maple Syrup',
+//     variant: 'Grade A Dark',
+//     price: 19.99,
+//     quantity: 2,
+//     image: 'https://images.unsplash.com/photo-1589496933738-f5c27bc146e3?auto=format&fit=crop&q=80&w=200',
+//   },
+//   {
+//     id: 3,
+//     name: 'Raw Sugar',
+//     variant: '1kg Pack',
+//     price: 12.99,
+//     quantity: 1,
+//     image: 'https://images.unsplash.com/photo-1597831520711-4456c0b4c0e3?auto=format&fit=crop&q=80&w=200',
+//   },
+// ];
 
 export default Cart;

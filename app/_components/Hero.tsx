@@ -1,5 +1,6 @@
 "use client"
 
+import Link from 'next/link'
 import React from 'react'
 
 function Hero() {
@@ -11,9 +12,10 @@ function Hero() {
                         Healthy Food<br />& Organic Market
                     </h2>
                     <p className="text-gray-600 mb-8">All natural products</p>
-                    <button className="bg-green-600 text-white px-8 py-3 rounded-full hover:bg-green-700">
-                        Shop Now
-                    </button>
+                    <Link href={"/products"}>
+                        <button className="bg-green-600 text-white px-8 py-3 rounded-full hover:bg-green-700">
+                            Shop Now
+                        </button></Link>
                 </div>
                 <div className="h-full ">
                     <img

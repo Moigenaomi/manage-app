@@ -1,12 +1,26 @@
 "use client"
 
-import React, { useState } from 'react';
-import { ShoppingCart, Search, Heart, Phone, Mail, MapPin, Minus, Plus, Star, Truck, Shield, RefreshCw } from 'lucide-react';
+import React, { useContext, useState } from 'react';
+import { Heart, Minus, Plus, Star, Truck, Shield, RefreshCw } from 'lucide-react';
 import Footer from '../../_components/Footer';
 import Header from '../../_components/header';
+import { Product } from '../../_components/FeaturedProducts';
+import { CartContext } from '../../../context/CartContext';
+import { toast } from 'sonner';
 
 function page() {
     const [quantity, setQuantity] = useState(1);
+
+    const { setCart } = useContext(CartContext)
+
+    const product: Product = {
+        name: 'Organic Apple Juice',
+        price: '29.99',
+        image: 'https://images.unsplash.com/photo-1576673442511-7e39b6545c87?auto=format&fit=crop&q=80&w=200',
+    }
+
+
+
 
     const decreaseQuantity = () => {
         if (quantity > 1) setQuantity(quantity - 1);
@@ -14,6 +28,22 @@ function page() {
 
     const increaseQuantity = () => {
         setQuantity(quantity + 1);
+    };
+
+    const addToCart = (item: Product) => {
+        try {
+            setCart((prevCart: Product[]) => [...prevCart, item]);
+
+            toast.success("Added to cart successfully", {
+                id: "cart-toast"
+            })
+        } catch (error) {
+            console.error(error)
+            toast.error("An error occurred while adding item to cart", {
+                id: "cart-toast"
+            })
+        }
+        // console.log(cart);
     };
 
     return (
@@ -30,7 +60,7 @@ function page() {
                             <li><span className="text-gray-400 mx-2">/</span></li>
                             <li><a href="#" className="text-gray-500 hover:text-green-600">Shop</a></li>
                             <li><span className="text-gray-400 mx-2">/</span></li>
-                            <li className="text-gray-900">Organic Honey</li>
+                            <li className="text-gray-900">{product.name}</li>
                         </ol>
                     </nav>
                 </div>
@@ -43,7 +73,7 @@ function page() {
                     <div className="space-y-4">
                         <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden">
                             <img
-                                src="https://images.unsplash.com/photo-1587049352846-4a222e784d38?auto=format&fit=crop&q=80&w=800"
+                                src={product.image}
                                 alt="Organic Honey"
                                 className="w-full h-full object-cover"
                             />
@@ -72,7 +102,7 @@ function page() {
                             </div>
                             <span className="text-gray-500">(24 Reviews)</span>
                         </div>
-                        <p className="text-3xl font-bold text-green-600 mb-6">$24.99</p>
+                        <p className="text-3xl font-bold text-green-600 mb-6">{product.price}</p>
                         <p className="text-gray-600 mb-6">
                             Our premium organic raw honey is sourced from sustainable apiaries, ensuring the highest quality and natural sweetness. Unprocessed and pure, this honey retains all its natural enzymes and beneficial properties.
                         </p>
@@ -99,7 +129,7 @@ function page() {
 
                         {/* Add to Cart */}
                         <div className="flex gap-4 mb-8">
-                            <button className="flex-1 bg-green-600 text-white py-3 px-6 rounded-full hover:bg-green-700 transition-colors">
+                            <button className="flex-1 bg-green-600 text-white py-3 px-6 rounded-full hover:bg-green-700 transition-colors" onClick={() => addToCart(product)}>
                                 Add to Cart
                             </button>
                             <button className="p-3 border rounded-full hover:text-green-600 hover:border-green-600 transition-colors">
@@ -163,8 +193,8 @@ function page() {
             <section className="container mx-auto py-12 px-4">
                 <h2 className="text-2xl font-bold mb-8">Related Products</h2>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                    {relatedProducts.map((product) => (
-                        <div key={product.name} className="group">
+                    {relatedProducts.map((product, index) => (
+                        <div key={index} className="group">
                             <div className="bg-gray-100 rounded-lg p-4 mb-4 relative">
                                 <img src={product.image} alt={product.name} className="w-full h-48 object-contain" />
                                 <button className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-green-600 text-white px-6 py-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">

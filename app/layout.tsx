@@ -5,6 +5,9 @@ import "./globals.css";
 import { ConvexProvider, ConvexReactClient } from "convex/react";
 import { CartContext } from "../context/CartContext";
 import { useState, ReactNode } from "react";
+import { Toaster } from "sonner";
+
+import Footer from "./_components/Footer";
 
 declare const process: {
   env: {
@@ -46,8 +49,11 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <CartContext.Provider value={{ cart, setCart }}>
       <html lang="en">
-        <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <body className={`${geistSans.variable} ${geistMono.variable} container mx-auto antialiased`}>
+          <Toaster />
+
           <ConvexProvider client={convex}>{children}</ConvexProvider>
+
         </body>
       </html>
     </CartContext.Provider>

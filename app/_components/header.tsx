@@ -3,8 +3,12 @@
 import { Heart, Search, SearchIcon, ShoppingCart } from "lucide-react";
 import { useContext } from "react";
 import { CartContext } from "../../context/CartContext";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const Header = () => {
+
+  const router = useRouter();
 
 
   const cartContext = useContext(CartContext);
@@ -36,7 +40,7 @@ const Header = () => {
       }
 
 
-      <header className="container mx-auto py-4 px-4 text-black">
+      <header className="container mx-auto py-4 px-4 text-black sticky top-0 z-10 backdrop-blur-md rounded-sm shadow shadow-gray-400 bg-white/80">
         <div className="flex justify-between items-center">
           <h1 className="text-2xl font-bold">ekommart</h1>
           <div className="flex items-center gap-6">
@@ -52,10 +56,12 @@ const Header = () => {
             <div className="flex gap-4">
               <Heart className="w-6 h-6" />
               <div className="relative">
-                <ShoppingCart className="w-6 h-6" />
-                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                  {cart && cart?.length || 0}
-                </span>
+                <div className="" onClick={() => router.push("/cart")}>
+                  <ShoppingCart className="w-6 h-6" />
+                  <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                    {cart && cart?.length || 0}
+                  </span>
+                </div>
               </div>
             </div>
           </div>
@@ -64,10 +70,10 @@ const Header = () => {
         {/* Navigation */}
         <nav className="mt-4">
           <ul className="flex flex-wrap gap-8">
-            <li className="hover:text-green-600 cursor-pointer">Home</li>
-            <li className="hover:text-green-600 cursor-pointer">About</li>
-            <li className="hover:text-green-600 cursor-pointer">Shop</li>
-            <li className="hover:text-green-600 cursor-pointer">Contact</li>
+            <Link href={"/"}><li className="hover:text-green-600 cursor-pointer">Home</li></Link>
+            {/* <li className="hover:text-green-600 cursor-pointer">About</li> */}
+            <Link href={"/products"}> <li className="hover:text-green-600 cursor-pointer">Shop</li></Link>
+            <li className="hover:text-green-600 cursor-pointer">Admin</li>
           </ul>
         </nav>
       </header>
